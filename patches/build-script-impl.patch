@@ -1,0 +1,24 @@
+--- swift/utils/build-script-impl.orig	2016-02-08 14:35:47.000000000 -0800
++++ swift/utils/build-script-impl	2016-02-22 22:41:15.000000000 -0800
+@@ -223,6 +223,9 @@
+         linux-x86_64)
+             SWIFT_HOST_VARIANT_ARCH="x86_64"
+             ;;
++        linux-armv5)
++            SWIFT_HOST_VARIANT_ARCH="armv5"
++            ;;
+         linux-armv6)
+             SWIFT_HOST_VARIANT_ARCH="armv6"
+             ;;
+@@ -802,6 +805,11 @@
+             "linux-x86_64"
+         )
+         ;;
++    Linux\ armv5*)
++        STDLIB_DEPLOYMENT_TARGETS=(
++            "linux-armv5"
++        )
++        ;;
+     Linux\ armv6*)
+         STDLIB_DEPLOYMENT_TARGETS=(
+             "linux-armv6"
