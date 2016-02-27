@@ -97,3 +97,11 @@ if [ ! -e "${destdir}" ] ; then
     mv "${project}-${release}" "${destdir}"
 fi
 
+cachedtgz="gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2"
+destdir="gcc-arm-none-eabi-4_9-2015q3"
+if [ ! -e "stage/${destdir}" ] ; then
+    cat "cache/${cachedtgz}" | bunzip2 | tar x
+    mv "${destdir}" "stage/${destdir}"
+    cp -a cache/arm-linux-androideabi-ld.gold "stage/${destdir}/bin/ld.gold"
+fi
+
