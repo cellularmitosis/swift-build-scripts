@@ -1,0 +1,9 @@
+cache/
+clang/
+cmark/
+llbuild/
+lldb/
+llvm/
+swift-corelibs-foundation/
+swift-corelibs-xctest/
+swift/
