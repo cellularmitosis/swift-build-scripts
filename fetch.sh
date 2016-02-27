@@ -23,7 +23,7 @@ do
 
 done
 
-for project in swift swift-corelibs-xctest swift-corelibs-foundation
+for project in swift swift-corelibs-xctest swift-corelibs-foundation swift-package-manager
 do
     tgz="${release}.tar.gz"
     tgzurl="https://github.com/${vendor}/${project}/archive/${tgz}"

@@ -31,3 +31,14 @@ do
     fi
 
 done
+
+
+project=swift-package-manager
+tgz="${release}.tar.gz"
+cachedtgz="${project}.${tgz}"
+if [ ! -e "swiftpm" ]
+then
+    cat "cache/${cachedtgz}" | gunzip | tar x
+    mv "${project}-${release}" "swiftpm"
+fi
+
