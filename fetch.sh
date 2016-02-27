@@ -3,37 +3,79 @@
 set -eu -o pipefail
 set -x
 
-vendor="apple"
 source versions.bash
 
 mkdir -p cache
 
-for project in cmark llvm lldb llbuild clang
-do
-    tgz="${release}.tar.gz"
-    tgzurl="https://github.com/${vendor}/swift-${project}/archive/${tgz}"
-    cachedtgz="${project}.${tgz}"
+project="cmark"
+vendor="apple"
+gitname="swift-${project}"
+tgz="${release}.tar.gz"
+tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
+cachedtgz="${project}.${tgz}"
+if [ ! -e "cache/${cachedtgz}" ] ; then wget -O "cache/${cachedtgz}" "${tgzurl}" ; fi
 
-    if [ ! -e "cache/${cachedtgz}" ]
-    then
-        cd cache
-        wget -O "${cachedtgz}" "${tgzurl}"
-        cd -
-    fi
+project="llvm"
+vendor="apple"
+gitname="swift-${project}"
+tgz="${release}.tar.gz"
+tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
+cachedtgz="${project}.${tgz}"
+if [ ! -e "cache/${cachedtgz}" ] ; then wget -O "cache/${cachedtgz}" "${tgzurl}" ; fi
 
-done
+project="lldb"
+vendor="apple"
+gitname="swift-${project}"
+tgz="${release}.tar.gz"
+tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
+cachedtgz="${project}.${tgz}"
+if [ ! -e "cache/${cachedtgz}" ] ; then wget -O "cache/${cachedtgz}" "${tgzurl}" ; fi
 
-for project in swift swift-corelibs-xctest swift-corelibs-foundation swift-package-manager
-do
-    tgz="${release}.tar.gz"
-    tgzurl="https://github.com/${vendor}/${project}/archive/${tgz}"
-    cachedtgz="${project}.${tgz}"
+project="llbuild"
+vendor="apple"
+gitname="swift-${project}"
+tgz="${release}.tar.gz"
+tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
+cachedtgz="${project}.${tgz}"
+if [ ! -e "cache/${cachedtgz}" ] ; then wget -O "cache/${cachedtgz}" "${tgzurl}" ; fi
 
-    if [ ! -e "cache/${cachedtgz}" ]
-    then
-        cd cache
-        wget -O "${cachedtgz}" "${tgzurl}"
-        cd -
-    fi
+project="clang"
+vendor="apple"
+gitname="swift-${project}"
+tgz="${release}.tar.gz"
+tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
+cachedtgz="${project}.${tgz}"
+if [ ! -e "cache/${cachedtgz}" ] ; then wget -O "cache/${cachedtgz}" "${tgzurl}" ; fi
 
-done
+project="swift"
+vendor="apple"
+gitname="${project}"
+tgz="${release}.tar.gz"
+tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
+cachedtgz="${project}.${tgz}"
+if [ ! -e "cache/${cachedtgz}" ] ; then wget -O "cache/${cachedtgz}" "${tgzurl}" ; fi
+
+project="swift-corelibs-xctest"
+vendor="apple"
+gitname="${project}"
+tgz="${release}.tar.gz"
+tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
+cachedtgz="${project}.${tgz}"
+if [ ! -e "cache/${cachedtgz}" ] ; then wget -O "cache/${cachedtgz}" "${tgzurl}" ; fi
+
+project="swift-corelibs-foundation"
+vendor="apple"
+gitname="${project}"
+tgz="${release}.tar.gz"
+tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
+cachedtgz="${project}.${tgz}"
+if [ ! -e "cache/${cachedtgz}" ] ; then wget -O "cache/${cachedtgz}" "${tgzurl}" ; fi
+
+project="swift-package-manager"
+vendor="apple"
+gitname="${project}"
+tgz="${release}.tar.gz"
+tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
+cachedtgz="${project}.${tgz}"
+if [ ! -e "cache/${cachedtgz}" ] ; then wget -O "cache/${cachedtgz}" "${tgzurl}" ; fi
+
