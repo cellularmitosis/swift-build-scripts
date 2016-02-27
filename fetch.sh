@@ -79,3 +79,7 @@ tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
 cachedtgz="${project}.${tgz}"
 if [ ! -e "cache/${cachedtgz}" ] ; then wget -O "cache/${cachedtgz}" "${tgzurl}" ; fi
 
+# cd cache
+# wget http://dl.google.com/android/ndk/android-ndk-r10e-linux-x86_64.bin
+# wget https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2
+

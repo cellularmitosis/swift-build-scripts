@@ -2,3 +2,4 @@ cache/
 stage/
 install/
 products/
+sysroot.*/
