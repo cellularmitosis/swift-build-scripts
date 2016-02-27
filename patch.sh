@@ -2,7 +2,8 @@
 
 set -eu -o pipefail
 
-for i in patches/*.patch
+cd stage/swift
+for i in ../../patches/*.patch
 do
-    patch < $i
+    patch -p1 < $i
 done
