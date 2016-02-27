@@ -3,7 +3,7 @@
 set -eu -o pipefail
 set -x
 
-release="swift-DEVELOPMENT-SNAPSHOT-2016-02-08-a"
+source versions.bash
 
 mkdir -p dest dist
 
