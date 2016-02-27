@@ -2,4 +2,4 @@
 
 set -eu -o pipefail
 
-rm -rf stage
+rm -rf stage install

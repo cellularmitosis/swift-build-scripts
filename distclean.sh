@@ -3,4 +3,4 @@
 set -eu -o pipefail
 
 ./clean.sh
-rm -rf cache
+rm -rf cache products
