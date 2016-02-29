@@ -7,6 +7,8 @@ source versions.bash
 
 mkdir -p ~/Downloads
 
+# this loop has been unrolled to make it easier to point individual repos to forks other than apple's
+
 project="cmark"
 vendor="apple"
 gitname="swift-${project}"
@@ -71,6 +73,15 @@ cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 project="swift-corelibs-foundation"
+vendor="apple"
+gitname="${project}"
+tgz="${release}.tar.gz"
+tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
+cachedtgz="${project}.${tgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
+if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
+
+project="swift-integration-tests"
 vendor="apple"
 gitname="${project}"
 tgz="${release}.tar.gz"

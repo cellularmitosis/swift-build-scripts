@@ -7,6 +7,8 @@ source versions.bash
 
 mkdir -p stage
 
+# this loop has been unrolled to make it easier to point individual repos to forks other than apple's
+
 project="cmark"
 vendor="apple"
 tgz="${release}.tar.gz"
@@ -85,6 +87,17 @@ if [ ! -e "${destdir}" ] ; then
 fi
 
 project="swift-corelibs-foundation"
+vendor="apple"
+tgz="${release}.tar.gz"
+cachedtgz="${project}.${tgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
+destdir="stage/${project}"
+if [ ! -e "${destdir}" ] ; then
+    cat "${cachedpath}" | gunzip | tar x
+    mv "${project}-${release}" "${destdir}"
+fi
+
+project="swift-integration-tests"
 vendor="apple"
 tgz="${release}.tar.gz"
 cachedtgz="${project}.${tgz}"
