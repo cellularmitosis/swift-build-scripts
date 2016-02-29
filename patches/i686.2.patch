@@ -1,0 +1,11 @@
+--- swift/utils/swift_build_support/swift_build_support/targets.py.orig	2016-02-25 11:50:11.000000000 -0600
++++ swift/utils/swift_build_support/swift_build_support/targets.py	2016-02-28 20:21:50.541818060 -0600
+@@ -23,6 +23,8 @@
+     if system == 'Linux':
+         if machine == 'x86_64':
+             return 'linux-x86_64'
++        if machine == 'i686':
++            return 'linux-i686'
+         elif machine.startswith('armv7'):
+             # linux-armv7* is canonicalized to 'linux-armv7'
+             return 'linux-armv7'

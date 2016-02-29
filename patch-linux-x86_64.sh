@@ -3,7 +3,7 @@
 set -eu -o pipefail
 
 cd stage/swift
-for i in ../../patches/notest.patch
+for i in notest.patch
 do
-    patch -p1 < $i
+    patch -p1 < ../../patches/$i
 done
