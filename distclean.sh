@@ -3,7 +3,7 @@
 set -eu -o pipefail
 
 ./clean.sh
-rm -rf cache products
+rm -rf products
 
 cd sysroots
 ./clean.sh
