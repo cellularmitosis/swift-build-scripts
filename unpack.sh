@@ -11,7 +11,7 @@ project="cmark"
 vendor="apple"
 tgz="${release}.tar.gz"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 destdir="stage/${project}"
 if [ ! -e "${destdir}" ] ; then
     cat "${cachedpath}" | gunzip | tar x
@@ -22,7 +22,7 @@ project="llvm"
 vendor="apple"
 tgz="${release}.tar.gz"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 destdir="stage/${project}"
 if [ ! -e "${destdir}" ] ; then
     cat "${cachedpath}" | gunzip | tar x
@@ -33,7 +33,7 @@ project="lldb"
 vendor="apple"
 tgz="${release}.tar.gz"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 destdir="stage/${project}"
 if [ ! -e "${destdir}" ] ; then
     cat "${cachedpath}" | gunzip | tar x
@@ -44,7 +44,7 @@ project="llbuild"
 vendor="apple"
 tgz="${release}.tar.gz"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 destdir="stage/${project}"
 if [ ! -e "${destdir}" ] ; then
     cat "${cachedpath}" | gunzip | tar x
@@ -55,7 +55,7 @@ project="clang"
 vendor="apple"
 tgz="${release}.tar.gz"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 destdir="stage/${project}"
 if [ ! -e "${destdir}" ] ; then
     cat "${cachedpath}" | gunzip | tar x
@@ -66,7 +66,7 @@ project="swift"
 vendor="apple"
 tgz="${release}.tar.gz"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 destdir="stage/${project}"
 if [ ! -e "${destdir}" ] ; then
     cat "${cachedpath}" | gunzip | tar x
@@ -77,7 +77,7 @@ project="swift-corelibs-xctest"
 vendor="apple"
 tgz="${release}.tar.gz"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 destdir="stage/${project}"
 if [ ! -e "${destdir}" ] ; then
     cat "${cachedpath}" | gunzip | tar x
@@ -88,7 +88,7 @@ project="swift-corelibs-foundation"
 vendor="apple"
 tgz="${release}.tar.gz"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 destdir="stage/${project}"
 if [ ! -e "${destdir}" ] ; then
     cat "${cachedpath}" | gunzip | tar x
@@ -99,7 +99,7 @@ project="swift-package-manager"
 vendor="apple"
 tgz="${release}.tar.gz"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 destdir="stage/swiftpm"
 if [ ! -e "${destdir}" ] ; then
     cat "${cachedpath}" | gunzip | tar x
@@ -107,7 +107,7 @@ if [ ! -e "${destdir}" ] ; then
 fi
 
 cachedtgz="gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 destdir="gcc-arm-none-eabi-4_9-2015q3"
 if [ ! -e "stage/${destdir}" ] ; then
     cat "${cachedpath}" | bunzip2 | tar x

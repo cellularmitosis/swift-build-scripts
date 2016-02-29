@@ -13,7 +13,7 @@ gitname="swift-${project}"
 tgz="${release}.tar.gz"
 tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 project="llvm"
@@ -22,7 +22,7 @@ gitname="swift-${project}"
 tgz="${release}.tar.gz"
 tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 project="lldb"
@@ -31,7 +31,7 @@ gitname="swift-${project}"
 tgz="${release}.tar.gz"
 tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 project="llbuild"
@@ -40,7 +40,7 @@ gitname="swift-${project}"
 tgz="${release}.tar.gz"
 tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 project="clang"
@@ -49,7 +49,7 @@ gitname="swift-${project}"
 tgz="${release}.tar.gz"
 tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 project="swift"
@@ -58,7 +58,7 @@ gitname="${project}"
 tgz="${release}.tar.gz"
 tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 project="swift-corelibs-xctest"
@@ -67,7 +67,7 @@ gitname="${project}"
 tgz="${release}.tar.gz"
 tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 project="swift-corelibs-foundation"
@@ -76,7 +76,7 @@ gitname="${project}"
 tgz="${release}.tar.gz"
 tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 project="swift-package-manager"
@@ -85,12 +85,12 @@ gitname="${project}"
 tgz="${release}.tar.gz"
 tgzurl="https://github.com/${vendor}/${gitname}/archive/${tgz}"
 cachedtgz="${project}.${tgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 cachedtgz="gcc-arm-none-eabi-4_9-2015q3-20150921-linux.tar.bz2"
 tgzurl="https://launchpad.net/gcc-arm-embedded/4.9/4.9-2015-q3-update/+download/${cachedtgz}"
-cachedpath="~/Downloads/${cachedtgz}"
+cachedpath="${HOME}/Downloads/${cachedtgz}"
 if [ ! -e "${cachedpath}" ] ; then wget -O "${cachedpath}" "${tgzurl}" ; fi
 
 # cd cache
