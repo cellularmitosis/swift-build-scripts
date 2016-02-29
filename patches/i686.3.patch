@@ -1,0 +1,13 @@
+--- swift/CMakeLists.txt.orig	2016-02-25 11:50:11.000000000 -0600
++++ swift/CMakeLists.txt	2016-02-29 09:11:37.338846018 -0600
+@@ -411,6 +411,10 @@
+     configure_sdk_unix(LINUX "Linux" "linux" "linux" "x86_64" "x86_64-unknown-linux-gnu")
+     set(SWIFT_HOST_VARIANT_ARCH "x86_64")
+     set(SWIFT_PRIMARY_VARIANT_ARCH_default "x86_64")
++  elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "i686")
++    configure_sdk_unix(LINUX "Linux" "linux" "linux" "i686" "i686-unknown-linux-gnu")
++    set(SWIFT_HOST_VARIANT_ARCH "i686")
++    set(SWIFT_PRIMARY_VARIANT_ARCH_default "i686")
+   # FIXME: This only matches ARMv6l (by far the most common variant).
+   elseif("${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "armv6l")
+     configure_sdk_unix(LINUX "Linux" "linux" "linux" "armv6" "armv6-unknown-linux-gnueabihf")
