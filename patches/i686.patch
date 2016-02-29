@@ -1,0 +1,24 @@
+--- swift/utils/build-script-impl.orig	2016-02-25 11:50:11.000000000 -0600
++++ swift/utils/build-script-impl	2016-02-28 19:58:08.918768612 -0600
+@@ -226,6 +226,9 @@
+     swiftpm_bootstrap_options=()
+ 
+     case ${deployment_target} in
++        linux-i686)
++            SWIFT_HOST_VARIANT_ARCH="i686"
++            ;;
+         linux-x86_64)
+             SWIFT_HOST_VARIANT_ARCH="x86_64"
+             ;;
+@@ -758,6 +761,11 @@
+ # Swift standard library for.
+ STDLIB_DEPLOYMENT_TARGETS=()
+ case "$(uname -s -m)" in
++    Linux\ i686)
++        STDLIB_DEPLOYMENT_TARGETS=(
++            "linux-i686"
++        )
++        ;;
+     Linux\ x86_64)
+         STDLIB_DEPLOYMENT_TARGETS=(
+             "linux-x86_64"
