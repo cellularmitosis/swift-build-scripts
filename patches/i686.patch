@@ -5,7 +5,7 @@
  
      case ${deployment_target} in
 +        linux-i686)
-+            SWIFT_HOST_VARIANT_ARCH="i686"
++            SWIFT_HOST_VARIANT_ARCH="i386"
 +            ;;
          linux-x86_64)
              SWIFT_HOST_VARIANT_ARCH="x86_64"
