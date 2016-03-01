@@ -12,4 +12,5 @@ cd stage
 ./swift/utils/build-script \
     --preset=buildbot_linux \
     install_destdir="$PWD/../install" \
+    install_prefix=/ \
     installable_package="$PWD/../products/${release}_`uname -s`_`uname -m`.tar.gz"
