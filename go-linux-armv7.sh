@@ -5,5 +5,5 @@ set -eu -o pipefail
 ./clean.sh
 ./fetch.sh
 ./unpack.sh
-./patch-linux-arm7.sh
-./build-linux-arm7.sh
+./patch-linux-armv7.sh
+./build-linux-armv7.sh

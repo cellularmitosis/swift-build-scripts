@@ -1,13 +1,13 @@
-From 4e17cb9fb4fbff3dc75f0d9ddb62dec41f2392d1 Mon Sep 17 00:00:00 2001
+From 928c4b780ed72fd3f127cb6bfb92e2610a1757bd Mon Sep 17 00:00:00 2001
 From: Tom Birch <tbirch@fb.com>
 Date: Wed, 24 Feb 2016 17:28:08 -0800
-Subject: [PATCH] Enable cross-compiling
+Subject: [PATCH 1/2] Enable cross-compiling
 
 Allow using and OS X build of swift to build libraries and binaries for another
 platform, only linux-armv7 is supported in this patch. Doesn't currently support
 building the tools (llvm, swiftc) or the tests for linux-armv7.
 
-* Added --cross-compile-targets to build-script
+* Added --cross-compile-stdlib-targets to build-script
 * Added --cross-compile-sysroot to build-script-impl
 * Added --cross-compile-toolchain-bin to build-script-impl
 * Set -resource-dir when cross-compiling
@@ -24,7 +24,7 @@ normally with:
 
 and then run this to build the linux-armv7 stdlib using the osx compiler:
 
-./utils/build-script -R --cross-compile-targets linux-armv7 -- --reconfigure
+./utils/build-script -R --cross-compile-stdlib-targets linux-armv7 -- --reconfigure
 --cross-compile-sysroot=$MY_SYSROOT
 --cross-compile-toolchain-bin=$MY_TOOLCHAIN_BIN
 ---
@@ -32,16 +32,16 @@ and then run this to build the linux-armv7 stdlib using the osx compiler:
  cmake/modules/SwiftSharedCMakeConfig.cmake |  9 ++--
  cmake/modules/Toolchain-linux-arm.cmake    | 51 ++++++++++++++++++
  stdlib/public/Glibc/CMakeLists.txt         | 10 +++-
- utils/build-script                         | 32 ++++++++++++
+ utils/build-script                         | 27 ++++++++++
  utils/build-script-impl                    | 84 ++++++++++++++++++++++++++----
- 6 files changed, 174 insertions(+), 16 deletions(-)
+ 6 files changed, 169 insertions(+), 16 deletions(-)
  create mode 100644 cmake/modules/Toolchain-linux-arm.cmake
 
 diff --git a/cmake/modules/AddSwift.cmake b/cmake/modules/AddSwift.cmake
-index ec2fe05..1365a5e 100644
+index bf77b4d..f63dc21 100644
 --- a/cmake/modules/AddSwift.cmake
 +++ b/cmake/modules/AddSwift.cmake
-@@ -131,6 +131,10 @@ function(_add_variant_swift_compile_flags
+@@ -163,6 +163,10 @@ function(_add_variant_swift_compile_flags
        "-sdk" "${SWIFT_SDK_${sdk}_PATH}"
        "-target" "${SWIFT_SDK_${sdk}_ARCH_${arch}_TRIPLE}")
  
@@ -160,7 +160,7 @@ index d7e277b..843d127 100644
 +    SWIFT_COMPILE_FLAGS "-I" "${GLIBC_INCLUDE_PATH}" "-I" "${GLIBC_ARCH_INCLUDE_PATH}" ${GLIBC_EXTRA_FLAGS}
      INSTALL_IN_COMPONENT stdlib-experimental)
 diff --git a/utils/build-script b/utils/build-script
-index 970fa37..3e5a403 100755
+index 8c58d62..25b95e9 100755
 --- a/utils/build-script
 +++ b/utils/build-script
 @@ -302,6 +302,12 @@ details of the setups of other systems or automated environments.""")
@@ -168,31 +168,19 @@ index 970fa37..3e5a403 100755
               "for the cross-compilation targets.",
          default=swift_build_support.targets.host_target())
 +    targets_group.add_argument(
-+        "--cross-compile-targets",
++        "--cross-compile-stdlib-targets",
 +        help="The cross-compliation targets. The Swift stdlib will be built for"
-+             "these targets using the host-target LLVM and Clang",
++             "these targets using the host-target LLVM, Clang and Swift",
 +        metavar="TARGET",
 +        nargs='*')
  
      projects_group = parser.add_argument_group(
          title="Options to select projects")
-@@ -552,6 +558,11 @@ also build for Apple watchos, but disallow tests that require an watchOS device"
-         default="false",  # so CMake can see the inert mode as a false value
-         dest="swift_analyze_code_coverage")
- 
-+    parser.add_argument("--linux",
-+        help="""
-+also build for Linux""",
-+        action="store_true")
-+
-     parser.add_argument("--build-subdir",
-         help="""
- name of the directory under $SWIFT_BUILD_ROOT where the build products will be
-@@ -781,6 +792,11 @@ the number of parallel build jobs to use""",
+@@ -781,6 +787,11 @@ the number of parallel build jobs to use""",
              "--skip-build-benchmarks"
          ]
  
-+    if platform.system() == 'Darwin' and not args.linux:
++    if platform.system() != 'Linux' and not args.cross_compile_stdlib_targets:
 +        build_script_impl_inferred_args += [
 +            "--skip-build-linux"
 +        ]
@@ -200,17 +188,17 @@ index 970fa37..3e5a403 100755
      if args.skip_build:
          build_script_impl_inferred_args += [
              "--skip-build-cmark",
-@@ -934,6 +950,22 @@ the number of parallel build jobs to use""",
+@@ -938,6 +949,22 @@ the number of parallel build jobs to use""",
      if args.extra_swift_args:
          build_script_impl_args += ["--extra-swift-args", ";".join(args.extra_swift_args)]
  
-+    if args.cross_compile_targets:
++    if args.cross_compile_stdlib_targets:
 +        # Currently only cross-compiling the swift libraries is supported.
 +        # Building the swift compiler would require building llvm too.
 +        llvm_path = os.path.join(build_dir, "llvm-"+args.host_target, 'bin')
 +        swift_path = os.path.join(build_dir, "swift-"+args.host_target, 'bin')
 +        build_script_impl_args += ["--cross-compile-tools-deployment-targets="
-+            + " ".join(args.cross_compile_targets),
++            + " ".join(args.cross_compile_stdlib_targets),
 +            "--native-llvm-tools-path=" + llvm_path,
 +            "--native-clang-tools-path=" + llvm_path,
 +            "--native-swift-tools-path=" + swift_path,
@@ -224,10 +212,10 @@ index 970fa37..3e5a403 100755
  
      # Unset environment variables that might affect how tools behave.
 diff --git a/utils/build-script-impl b/utils/build-script-impl
-index 459d508..cebe7a0 100755
+index 7989975..79ec29f 100755
 --- a/utils/build-script-impl
 +++ b/utils/build-script-impl
-@@ -183,6 +183,8 @@ KNOWN_SETTINGS=(
+@@ -184,6 +184,8 @@ KNOWN_SETTINGS=(
      darwin-install-extract-symbols ""            "whether to extract symbols with dsymutil during installations"
      host-target                 ""               "The host target. LLVM, Clang, and Swift will be built for this target. The built LLVM and Clang will be used to compile Swift for the cross-compilation targets. **This argument is required**"
      cross-compile-tools-deployment-targets ""    "space-separated list of targets to cross-compile host Swift tools for"
@@ -244,7 +232,7 @@ index 459d508..cebe7a0 100755
  )
  
  function toupper() {
-@@ -726,13 +729,19 @@ function true_false() {
+@@ -733,13 +736,19 @@ function true_false() {
  # We can't run the resulting binaries on the build machine.
  CROSS_TOOLS_DEPLOYMENT_TARGETS=()
  
@@ -265,7 +253,7 @@ index 459d508..cebe7a0 100755
              CROSS_TOOLS_DEPLOYMENT_TARGETS=(
                  "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"
                  "${t}"
-@@ -802,6 +811,7 @@ case "$(uname -s -m)" in
+@@ -809,6 +818,7 @@ case "$(uname -s -m)" in
              "iphoneos-armv7"
              "appletvos-arm64"
              "watchos-armv7k"
@@ -273,7 +261,7 @@ index 459d508..cebe7a0 100755
          )
          ;;
  
-@@ -880,7 +890,18 @@ if [ ! -d "${CLANG_SOURCE_DIR}" ] ; then
+@@ -887,7 +897,18 @@ if [ ! -d "${CLANG_SOURCE_DIR}" ] ; then
      ln -sf "${WORKSPACE}/clang" "${CLANG_SOURCE_DIR}"
  fi
  
@@ -293,7 +281,7 @@ index 459d508..cebe7a0 100755
  if [[ ! "${SKIP_BUILD_LLDB}" ]] ; then
       PRODUCTS=("${PRODUCTS[@]}" lldb)
  fi
-@@ -1291,6 +1312,33 @@ function set_swiftpm_bootstrap_command() {
+@@ -1312,6 +1333,33 @@ function set_swiftpm_bootstrap_command() {
      fi
  }
  
@@ -327,7 +315,7 @@ index 459d508..cebe7a0 100755
  mkdir -p "${BUILD_DIR}"
  
  #
-@@ -1332,7 +1380,7 @@ fi
+@@ -1353,7 +1401,7 @@ fi
  # Configure and build each product
  #
  # Start with native deployment targets because the resulting tools are used during cross-compilation.
@@ -336,7 +324,7 @@ index 459d508..cebe7a0 100755
      set_deployment_target_based_options
  
      case "${COMPILER_VENDOR}" in
-@@ -1428,6 +1476,21 @@ for deployment_target in "${HOST_TARGET}" "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"
+@@ -1448,6 +1496,21 @@ for deployment_target in "${HOST_TARGET}" "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"
          unset skip_build
          build_dir=$(build_directory ${deployment_target} ${product})
          build_targets=(all)
@@ -358,7 +346,7 @@ index 459d508..cebe7a0 100755
          cmake_options=("${COMMON_CMAKE_OPTIONS[@]}")
  
          # Add in gold linker support if requested.
-@@ -1491,6 +1554,9 @@ for deployment_target in "${HOST_TARGET}" "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"
+@@ -1511,6 +1574,9 @@ for deployment_target in "${HOST_TARGET}" "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"
                      build_targets=(clean)
                  fi
                  if [ "${SKIP_BUILD_LLVM}" ] ; then
@@ -368,7 +356,7 @@ index 459d508..cebe7a0 100755
                      # We can't skip the build completely because the standalone
                      # build of Swift depend on these.
                      build_targets=(llvm-config llvm-tblgen clang-headers)
-@@ -1553,10 +1619,6 @@ for deployment_target in "${HOST_TARGET}" "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"
+@@ -1573,10 +1639,6 @@ for deployment_target in "${HOST_TARGET}" "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"
  
                      cmake_options=(
                          "${cmake_options[@]}"
@@ -379,7 +367,7 @@ index 459d508..cebe7a0 100755
                          -DLLVM_MAIN_SRC_DIR:PATH="${LLVM_SOURCE_DIR}"
                      )
                  else
-@@ -1567,13 +1629,13 @@ for deployment_target in "${HOST_TARGET}" "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"
+@@ -1587,13 +1649,13 @@ for deployment_target in "${HOST_TARGET}" "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"
                  # Command-line parameters override any autodetection that we
                  # might have done.
                  if [[ "${NATIVE_LLVM_TOOLS_PATH}" ]] ; then
@@ -396,7 +384,7 @@ index 459d508..cebe7a0 100755
                  fi
  
                  if [ "${BUILD_LLVM}" == "0" ] ; then
-@@ -2129,7 +2191,7 @@ for deployment_target in "${STDLIB_DEPLOYMENT_TARGETS[@]}"; do
+@@ -2149,7 +2211,7 @@ for deployment_target in "${STDLIB_DEPLOYMENT_TARGETS[@]}"; do
      done
  done
  
@@ -405,3 +393,191 @@ index 459d508..cebe7a0 100755
      set_deployment_target_based_options
  
      for product in "${PRODUCTS[@]}"; do
+
+From db55f7de715394e38cb4109f3bd333df9115a3e7 Mon Sep 17 00:00:00 2001
+From: Tom Birch <tbirch@fb.com>
+Date: Mon, 29 Feb 2016 15:22:14 -0800
+Subject: [PATCH 2/2] Fixes from code review
+
+* Remove --linux command
+* Invoke build-script-impl twice from build-script
+* Rename cross-compile-tools-deployment-targets to
+  cross-compile-deployment-targets since here it's used only to build stdlib
+---
+ utils/build-script      | 47 ++++++++++++++++++++++++++---------------------
+ utils/build-script-impl | 29 +++++++++++++----------------
+ 2 files changed, 39 insertions(+), 37 deletions(-)
+
+diff --git a/utils/build-script b/utils/build-script
+index 25b95e9..782c747 100755
+--- a/utils/build-script
++++ b/utils/build-script
+@@ -787,11 +787,6 @@ the number of parallel build jobs to use""",
+             "--skip-build-benchmarks"
+         ]
+ 
+-    if platform.system() != 'Linux' and not args.cross_compile_stdlib_targets:
+-        build_script_impl_inferred_args += [
+-            "--skip-build-linux"
+-        ]
+-
+     if args.skip_build:
+         build_script_impl_inferred_args += [
+             "--skip-build-cmark",
+@@ -949,13 +944,34 @@ the number of parallel build jobs to use""",
+     if args.extra_swift_args:
+         build_script_impl_args += ["--extra-swift-args", ";".join(args.extra_swift_args)]
+ 
++    build_script_impl_args += args.build_script_impl_args
++
++    # Unset environment variables that might affect how tools behave.
++    for v in ['MAKEFLAGS', 'SDKROOT', 'MACOSX_DEPLOYMENT_TARGET', 'IPHONEOS_DEPLOYMENT_TARGET']:
++        os.environ.pop(v, None)
++
++    if args.show_sdks:
++        swift_build_support.debug.print_xcodebuild_versions([
++            'iphonesimulator',
++            'appletvsimulator',
++            'watchsimulator',
++        ])
++
++    host_build_script_impl_args = []
++
++    if platform.system() != 'Linux':
++        host_build_script_impl_args += [
++            "--skip-build-linux"
++        ]
++
++    check_call(build_script_impl_args + host_build_script_impl_args)
++
+     if args.cross_compile_stdlib_targets:
+         # Currently only cross-compiling the swift libraries is supported.
+         # Building the swift compiler would require building llvm too.
+         llvm_path = os.path.join(build_dir, "llvm-"+args.host_target, 'bin')
+         swift_path = os.path.join(build_dir, "swift-"+args.host_target, 'bin')
+-        build_script_impl_args += ["--cross-compile-tools-deployment-targets="
+-            + " ".join(args.cross_compile_stdlib_targets),
++        build_script_impl_args += [
+             "--native-llvm-tools-path=" + llvm_path,
+             "--native-clang-tools-path=" + llvm_path,
+             "--native-swift-tools-path=" + swift_path,
+@@ -965,20 +981,9 @@ the number of parallel build jobs to use""",
+             "--build-swift-tools=0"
+             ]
+ 
+-    build_script_impl_args += args.build_script_impl_args
+-
+-    # Unset environment variables that might affect how tools behave.
+-    for v in ['MAKEFLAGS', 'SDKROOT', 'MACOSX_DEPLOYMENT_TARGET', 'IPHONEOS_DEPLOYMENT_TARGET']:
+-        os.environ.pop(v, None)
+-
+-    if args.show_sdks:
+-        swift_build_support.debug.print_xcodebuild_versions([
+-            'iphonesimulator',
+-            'appletvsimulator',
+-            'watchsimulator',
+-        ])
+-
+-    check_call(build_script_impl_args)
++        for target in args.cross_compile_stdlib_targets:
++            check_call(build_script_impl_args +
++                    ["--cross-compile-deployment-targets=" + target])
+ 
+     if args.symbols_package:
+         print('--- Creating symbols package ---')
+diff --git a/utils/build-script-impl b/utils/build-script-impl
+index 79ec29f..7d5b1f4 100755
+--- a/utils/build-script-impl
++++ b/utils/build-script-impl
+@@ -183,7 +183,7 @@ KNOWN_SETTINGS=(
+     install-libdispatch         ""               "whether to install libdispatch"
+     darwin-install-extract-symbols ""            "whether to extract symbols with dsymutil during installations"
+     host-target                 ""               "The host target. LLVM, Clang, and Swift will be built for this target. The built LLVM and Clang will be used to compile Swift for the cross-compilation targets. **This argument is required**"
+-    cross-compile-tools-deployment-targets ""    "space-separated list of targets to cross-compile host Swift tools for"
++    cross-compile-deployment-targets ""          "space-separated list of targets to cross-compile Swift for"
+     cross-compile-sysroot       ""               "sysroot to use when cross-compiling"
+     cross-compile-toolchain-bin ""               "toolchain binary dir to use when cross-compiling"
+     skip-merge-lipo-cross-compile-tools ""       "set to skip running merge-lipo after installing cross-compiled host Swift tools"
+@@ -732,9 +732,10 @@ function true_false() {
+     esac
+ }
+ 
+-# A list of deployment targets to cross-compile the Swift host tools for.
++# A list of deployment targets to cross-compile the Swift host tools/stdlib for.
+ # We can't run the resulting binaries on the build machine.
+-CROSS_TOOLS_DEPLOYMENT_TARGETS=()
++set -x
++CROSS_COMPILE_DEPLOYMENT_TARGETS=($CROSS_COMPILE_DEPLOYMENT_TARGETS)
+ 
+ if [[ ! -z "${NATIVE_LLVM_TOOLS_PATH}" && ! -z "${NATIVE_CLANG_TOOLS_PATH}" && !  -z "${NATIVE_SWIFT_TOOLS_PATH}" ]] ; then
+     BUILD_HOST_TARGET=""
+@@ -743,17 +744,13 @@ else
+ fi
+ 
+ # Sanitize the list of cross-compilation targets.
+-for t in ${CROSS_COMPILE_TOOLS_DEPLOYMENT_TARGETS} ; do
++for t in "${CROSS_COMPILE_DEPLOYMENT_TARGETS[@]}" ; do
+     case ${t} in
+         iphonesimulator-i386 | iphonesimulator-x86_64 | \
+         iphoneos-arm64 | iphoneos-armv7 | \
+         appletvos-arm64 | appletvsimulator-x86_64 | \
+         watchos-armv7k | watchsimulator-i386 | linux-armv7)
+-            CROSS_TOOLS_DEPLOYMENT_TARGETS=(
+-                "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"
+-                "${t}"
+-            )
+-            ;;
++            ;; # pass
+         *)
+             echo "Unknown deployment target: ${t}"
+             exit 1
+@@ -763,7 +760,7 @@ done
+ 
+ function is_cross_tools_deployment_target() {
+     local deployment_target="$1"
+-    for t in "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}" ; do
++    for t in "${CROSS_COMPILE_DEPLOYMENT_TARGETS[@]}" ; do
+         if [ "${deployment_target}" == "${t}" ] ; then
+             echo 1
+         fi
+@@ -1401,7 +1398,7 @@ fi
+ # Configure and build each product
+ #
+ # Start with native deployment targets because the resulting tools are used during cross-compilation.
+-for deployment_target in ${BUILD_HOST_TARGET} ${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}; do
++for deployment_target in ${BUILD_HOST_TARGET} ${CROSS_COMPILE_DEPLOYMENT_TARGETS[@]}; do
+     set_deployment_target_based_options
+ 
+     case "${COMPILER_VENDOR}" in
+@@ -2211,7 +2208,7 @@ for deployment_target in "${STDLIB_DEPLOYMENT_TARGETS[@]}"; do
+     done
+ done
+ 
+-for deployment_target in ${BUILD_HOST_TARGET} ${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}; do
++for deployment_target in ${BUILD_HOST_TARGET} ${CROSS_COMPILE_DEPLOYMENT_TARGETS[@]}; do
+     set_deployment_target_based_options
+ 
+     for product in "${PRODUCTS[@]}"; do
+@@ -2350,7 +2347,7 @@ for deployment_target in ${BUILD_HOST_TARGET} ${CROSS_TOOLS_DEPLOYMENT_TARGETS[@
+             exit 1
+         fi
+ 
+-        if [ "${CROSS_COMPILE_TOOLS_DEPLOYMENT_TARGETS}" ] ; then
++        if [ "${CROSS_COMPILE_DEPLOYMENT_TARGETS}" ] ; then
+             # If cross compiling tools, install into a deployment target specific subdirectory.
+             if [[ ! "${SKIP_MERGE_LIPO_CROSS_COMPILE_TOOLS}" ]] ; then
+                 target_install_destdir="${BUILD_DIR}"/intermediate-install/"${deployment_target}"
+@@ -2372,10 +2369,10 @@ for deployment_target in ${BUILD_HOST_TARGET} ${CROSS_TOOLS_DEPLOYMENT_TARGETS[@
+ 
+ done
+ 
+-if [[ "${CROSS_COMPILE_TOOLS_DEPLOYMENT_TARGETS}" ]] && [[ ! "${SKIP_MERGE_LIPO_CROSS_COMPILE_TOOLS}" ]] ; then
+-    echo "--- Merging and running lipo for ${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]} ---"
++if [[ "${CROSS_COMPILE_DEPLOYMENT_TARGETS}" ]] && [[ ! "${SKIP_MERGE_LIPO_CROSS_COMPILE_TOOLS}" ]] ; then
++    echo "--- Merging and running lipo for ${CROSS_COMPILE_DEPLOYMENT_TARGETS[@]} ---"
+     lipo_src_dirs=()
+-    for deployment_target in "${CROSS_TOOLS_DEPLOYMENT_TARGETS[@]}"; do
++    for deployment_target in "${CROSS_COMPILE_DEPLOYMENT_TARGETS[@]}"; do
+         lipo_src_dirs=(
+             "${lipo_src_dirs[@]}"
+             "${BUILD_DIR}"/intermediate-install/"${deployment_target}"
