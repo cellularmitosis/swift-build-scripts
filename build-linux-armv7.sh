@@ -15,5 +15,6 @@ cd stage
 ./swift/utils/build-script -R \
     --cross-compile-stdlib-targets linux-armv7 \
     -- \
+    --reconfigure \
     --cross-compile-sysroot="${sysroot}" \
     --cross-compile-toolchain-bin="${toolchain}"
