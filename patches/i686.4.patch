@@ -1,0 +1,10 @@
+--- swift/cmake/modules/SwiftSetIfArchBitness.cmake.orig	2016-02-25 11:50:11.000000000 -0600
++++ swift/cmake/modules/SwiftSetIfArchBitness.cmake	2016-02-29 21:47:18.155678988 -0600
+@@ -7,6 +7,7 @@
+       ${ARGN})
+ 
+   if("${SIA_ARCH}" STREQUAL "i386" OR
++      "${SIA_ARCH}" STREQUAL "i686" OR
+       "${SIA_ARCH}" STREQUAL "armv6" OR
+       "${SIA_ARCH}" STREQUAL "armv7" OR
+       "${SIA_ARCH}" STREQUAL "armv7k" OR
