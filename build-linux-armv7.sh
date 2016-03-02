@@ -8,7 +8,7 @@ source versions.bash
 mkdir -p install products
 
 sysroot="`pwd`/sysroots/sysroot.armhf.ubuntu.trusty"
-toolchain="`pwd`/stage/gcc-arm-none-eabi-4_9-2015q3/bin"
+toolchain="`pwd`/stage/gcc-arm-none-eabi-4_9-2015q3/bin/arm-none-eabi-"
 
 cd stage
 

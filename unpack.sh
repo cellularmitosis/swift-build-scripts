@@ -125,5 +125,5 @@ destdir="gcc-arm-none-eabi-4_9-2015q3"
 if [ ! -e "stage/${destdir}" ] ; then
     cat "${cachedpath}" | bunzip2 | tar x
     mv "${destdir}" "stage/${destdir}"
-    cp -a cache/arm-linux-androideabi-ld.gold "stage/${destdir}/bin/ld.gold"
+    cp -a cache/arm-linux-androideabi-ld.gold "stage/${destdir}/bin/arm-none-eabi-ld.gold"
 fi
