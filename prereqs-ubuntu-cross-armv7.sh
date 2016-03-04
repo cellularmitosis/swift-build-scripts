@@ -5,6 +5,8 @@ set -x
 
 sudo apt-get install \
     git \
+    clang-3.6 \
+    realpath \
     cmake \
     ninja-build \
     python \
@@ -18,4 +20,5 @@ sudo apt-get install \
     swig \
     libpython-dev \
     libncurses5-dev \
-    pkg-config
+    pkg-config \
+    gcc-arm-linux-gnueabi
