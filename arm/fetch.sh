@@ -3,9 +3,16 @@
 set -eu -o pipefail
 
 SELF_PATH="$( readlink -e "${BASH_SOURCE[0]}")"
-SELF_DIR="$(dirname "${SELF_PATH}")"
+SELF_DIR="$( dirname "${SELF_PATH}" )"
+SELF_NAME="$( basename "${SELF_PATH}" )"
 
-source "${SELF_DIR}/shas.bash"
+if [ "${SELF_NAME}" = "build-3.0.sh" ]
+then
+    source "${SELF_DIR}/shas-3.0.bash"
+else
+    source "${SELF_DIR}/shas-2.2.bash"
+fi
+
 source "${SELF_DIR}/vars.bash"
 
 
