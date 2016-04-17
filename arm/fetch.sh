@@ -2,8 +2,11 @@
 
 set -eu -o pipefail
 
-source vars.bash
-source shas.bash
+SELF_PATH="$( readlink -e "${BASH_SOURCE[0]}")"
+SELF_DIR="$(dirname "${SELF_PATH}")"
+
+source "${SELF_DIR}/shas.bash"
+source "${SELF_DIR}/vars.bash"
 
 
 ## dir structure

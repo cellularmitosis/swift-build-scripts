@@ -2,8 +2,11 @@
 
 set -eu -o pipefail
 
-source shas.bash
-source vars.bash
+SELF_PATH="$( readlink -e "${BASH_SOURCE[0]}")"
+SELF_DIR="$(dirname "${SELF_PATH}")"
+
+source "${SELF_DIR}/shas.bash"
+source "${SELF_DIR}/vars.bash"
 
 export SWIFT_SOURCE_ROOT="$( pwd )/swift_src"
 export SWIFT_BUILD_ROOT="$( pwd )/swift_build"
@@ -35,4 +38,4 @@ ln -s "${SRC}/swift-corelibs-xctest-${XCTEST_SHA}" swift-corelibs-xctest
 ln -s "${SRC}/swift-corelibs-foundation-${FOUNDATION_SHA}" swift-corelibs-foundation
 
 cd "${SWIFT_BUILD_ROOT}"
-time nice "${SWIFT_SOURCE_ROOT}/swift/utils/build-script"
+time nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -j 1
