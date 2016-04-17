@@ -18,7 +18,7 @@ git clone https://github.com/cellularmitosis/swift-build-scripts
 run the fetch.sh script to fetch all of the tarballs according to the versions in shas.bash.
 
 ```bash
-~/github/cellularmitosis/swift-build-scripts/arm/fetch.sh
+~/github/cellularmitosis/swift-build-scripts/arm/fetch-2.2.sh
 ```
 
 create a temp directory somewhere and run build.sh from that directory.
@@ -26,5 +26,5 @@ create a temp directory somewhere and run build.sh from that directory.
 ```bash
 mkdir -p ~/swift-builds/1
 cd ~/swift-builds/1
-~/github/cellularmitosis/swift-build-scripts/arm/build.sh
+~/github/cellularmitosis/swift-build-scripts/arm/build-2.2.sh
 ```
