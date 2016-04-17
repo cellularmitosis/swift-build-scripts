@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -eu -o pipefail
+set -x
 
 SELF_NAME="$( basename "${BASH_SOURCE[0]}" )"
 SELF_DIR="$( dirname $( readlink -e "${BASH_SOURCE[0]}" ) )"
