@@ -38,4 +38,10 @@ ln -s "${SRC}/swift-corelibs-xctest-${XCTEST_SHA}" swift-corelibs-xctest
 ln -s "${SRC}/swift-corelibs-foundation-${FOUNDATION_SHA}" swift-corelibs-foundation
 
 cd "${SWIFT_BUILD_ROOT}"
-time nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R -j 1
+
+# run once with all cores until we get killed via OOM during linking...
+nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R || true
+
+# then run again with just 1 core to complete the linking.
+nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R -j 1
+
