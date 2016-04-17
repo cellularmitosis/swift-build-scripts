@@ -1,26 +1,16 @@
-# 2016/4/5, swift-2.2-branch 
+# swift-2.2.1-SNAPSHOT-2016-04-12-a
 SWIFT_SHA="b0867f0"
-
-# 2016/3/31, swift-2.2-branch
 LLVM_SHA="da67bff"
-
-# 2016/4/1, swift-2.2-branch
 CLANG_SHA="81d0486"
-
-# 2016/3/30, swift-2.2-branch
 LLDB_SHA="d673fea"
-
-# 2015/12/10, swift-2.2-branch
 CMARK_SHA="5af77f3"
-
-# 2016/1/21, swift-2.2-branch
 TESTS_SHA="c497103"
 
 # swift-DEVELOPMENT-SNAPSHOT-2016-04-12-a
 LLBUILD_SHA="a69e629"
 
-# 0.2.2
-PM_SHA="5389d99"
+# swift-DEVELOPMENT-SNAPSHOT-2016-04-12-a
+PM_SHA="e8cd7d7"
 
 # swift-DEVELOPMENT-SNAPSHOT-2016-04-12-a
 XCTEST_SHA="ab3a2d9"
