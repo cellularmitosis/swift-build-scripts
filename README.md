@@ -1,5 +1,5 @@
 # swift-build-scripts
-Bash scripts for building Swift on Linux/ARM
+Bash scripts for building [Swift](https://github.com/apple/swift) on Linux/ARM
 
 ## status
 
