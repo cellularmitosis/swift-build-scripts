@@ -38,4 +38,4 @@ ln -s "${SRC}/swift-corelibs-xctest-${XCTEST_SHA}" swift-corelibs-xctest
 ln -s "${SRC}/swift-corelibs-foundation-${FOUNDATION_SHA}" swift-corelibs-foundation
 
 cd "${SWIFT_BUILD_ROOT}"
-time nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -j 1
+time nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R -j 1
