@@ -26,7 +26,7 @@ create a temp directory somewhere and run the build script from that directory.
 ```bash
 mkdir -p ~/swift-builds/1
 cd ~/swift-builds/1
-~/github/cellularmitosis/swift-build-scripts/arm/build-swift-2.2.1-RELEASE.sh
+~/github/cellularmitosis/swift-build-scripts/arm/build-swift-2.2.1-RELEASE.sh 2>&1 | tee log.txt
 ```
 
 see also [awesome-swift-arm](https://github.com/cellularmitosis/awesome-swift-arm).
