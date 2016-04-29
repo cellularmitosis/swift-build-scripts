@@ -1,17 +1,14 @@
 #!/bin/bash
 
 set -eu -o pipefail
+set -x
 
-SELF_PATH="$( readlink -e "${BASH_SOURCE[0]}")"
-SELF_DIR="$( dirname "${SELF_PATH}" )"
-SELF_NAME="$( basename "${SELF_PATH}" )"
+SELF_NAME="$( basename "${BASH_SOURCE[0]}" )"
+SELF_DIR="$( dirname $( readlink -e "${BASH_SOURCE[0]}" ) )"
+SELF_VERSION=$( echo "${SELF_NAME}" | sed 's/build\(.*\)\.sh/\1/' )
 
-if [ "${SELF_NAME}" = "build-3.0.sh" ]
-then
-    source "${SELF_DIR}/shas-3.0.bash"
-else
-    source "${SELF_DIR}/shas-2.2.bash"
-fi
+SHAS="${SELF_DIR}/shas${SELF_VERSION}.bash"
+source "${SHAS}"
 
 source "${SELF_DIR}/vars.bash"
 
