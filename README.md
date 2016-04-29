@@ -28,3 +28,5 @@ mkdir -p ~/swift-builds/1
 cd ~/swift-builds/1
 ~/github/cellularmitosis/swift-build-scripts/arm/build-swift-2.2.1-RELEASE.sh
 ```
+
+see also [awesome-swift-arm](https://github.com/cellularmitosis/awesome-swift-arm).
