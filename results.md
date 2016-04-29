@@ -2,8 +2,9 @@
 
 ## 2016/4/28: 2.2.1-RELEASE: FAILURE
 
-* **Script:** build-swift-2.2.1-RELEASE.sh
 * **Status:** FAILURE ("Pointer is not sufficiently aligned")
+* **Script:** build-swift-2.2.1-RELEASE.sh
+* **SHAs:** [shas-swift-2.2.1-RELEASE.bash](/arm/shas-swift-2.2.1-RELEASE.bash)
 * **Hardware:** Raspberry Pi 3 (armv7l)
 * **OS:** raspbian/jessie, clang-3.7
 
