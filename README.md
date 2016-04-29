@@ -30,3 +30,7 @@ cd ~/swift-builds/1
 ```
 
 see also [awesome-swift-arm](https://github.com/cellularmitosis/awesome-swift-arm).
+
+## results log
+
+see [results.md](/results.md)
