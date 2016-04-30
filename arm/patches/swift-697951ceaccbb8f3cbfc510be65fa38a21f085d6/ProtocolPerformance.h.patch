@@ -1,0 +1,12 @@
+diff -urN swift-697951ceaccbb8f3cbfc510be65fa38a21f085d6.orig/include/swift/AST/ProtocolConformance.h swift-697951ceaccbb8f3cbfc510be65fa38a21f085d6/include/swift/AST/ProtocolConformance.h
+--- swift-697951ceaccbb8f3cbfc510be65fa38a21f085d6.orig/include/swift/AST/ProtocolConformance.h	2016-04-18 21:05:06.000000000 +0000
++++ swift-697951ceaccbb8f3cbfc510be65fa38a21f085d6/include/swift/AST/ProtocolConformance.h	2016-04-30 00:30:04.257261943 +0000
+@@ -89,7 +89,7 @@
+ ///
+ /// ProtocolConformance is an abstract base class, implemented by subclasses
+ /// for the various kinds of conformance (normal, specialized, inherited).
+-class ProtocolConformance {
++class alignas(1 << DeclAlignInBits) ProtocolConformance {
+   /// The kind of protocol conformance.
+   ProtocolConformanceKind Kind;
+ 
