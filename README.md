@@ -15,18 +15,12 @@ cd ~/github/cellularmitosis
 git clone https://github.com/cellularmitosis/swift-build-scripts
 ```
 
-run the fetch script to fetch all of the tarballs according to the versions in shas.bash.
-
-```bash
-~/github/cellularmitosis/swift-build-scripts/arm/fetch-swift-2.2.1-RELEASE.sh
-```
-
-create a temp directory somewhere and run the build script from that directory.
+create a temp directory somewhere and run the `go` script from that directory:
 
 ```bash
 mkdir -p ~/swift-builds/1
 cd ~/swift-builds/1
-~/github/cellularmitosis/swift-build-scripts/arm/build-swift-2.2.1-RELEASE.sh 2>&1 | tee log.txt
+~/github/cellularmitosis/swift-build-scripts/arm/go-swift-2.2.1-RELEASE.sh
 ```
 
 see also [awesome-swift-arm](https://github.com/cellularmitosis/awesome-swift-arm).
