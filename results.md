@@ -141,3 +141,14 @@ ninja: build stopped: subcommand failed.
 /home/cell/swift_builds/10_2.2.1/swift_src/swift/utils/build-script: command terminated with a non-zero exit status
 1, aborting
 ```
+
+## 2016/4/29: 2.2.1-Release: SUCCESS
+
+This build added @hpux735's ProtocolConformance patch.
+
+The build succeeded, but running `Ninja-ReleaseAssert/swift-linux-armv7/bin/swiftc` results in:
+
+```
+<unknown>:0: error: unable to load standard library for target 'armv7l-unknown-linux-gnueabihf'
+```
+
