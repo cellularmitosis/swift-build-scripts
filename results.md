@@ -7,6 +7,7 @@
 * **SHAs:** [shas-swift-2.2.1-RELEASE.bash](/arm/shas-swift-2.2.1-RELEASE.bash)
 * **Hardware:** Raspberry Pi 3 (armv7l)
 * **OS:** raspbian/jessie, clang-3.7
+* **Build Log:** [log.txt](/logs/20160429_build1/log.txt)
 
 This build added @hpux735's [ProtocolConformance patch](/arm/patches/swift-697951ceaccbb8f3cbfc510be65fa38a21f085d6/ProtocolConformance.h.patch).
 
@@ -23,6 +24,7 @@ The build succeeded, but running `Ninja-ReleaseAssert/swift-linux-armv7/bin/swif
 * **SHAs:** [shas-swift-2.2.1-RELEASE.bash](/arm/shas-swift-2.2.1-RELEASE.bash)
 * **Hardware:** Raspberry Pi 3 (armv7l)
 * **OS:** raspbian/jessie, clang-3.7
+* **Build Log:** [log.txt](/logs/20160428_build1/log.txt)
 
 ```bash
 swift: /home/cell/swift_builds/10_2.2.1/swift_src/llvm/include/llvm/ADT/PointerIntPair.h:114:
