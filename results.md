@@ -1,5 +1,21 @@
 # Results Log
 
+## 2016/4/29: 2.2.1-Release: SUCCESS
+
+* **Status:** SUCCESS (but swiftc can't load its standard library)
+* **Script:** build-swift-2.2.1-RELEASE.sh
+* **SHAs:** [shas-swift-2.2.1-RELEASE.bash](/arm/shas-swift-2.2.1-RELEASE.bash)
+* **Hardware:** Raspberry Pi 3 (armv7l)
+* **OS:** raspbian/jessie, clang-3.7
+
+This build added @hpux735's [ProtocolConformance patch](/arm/patches/swift-697951ceaccbb8f3cbfc510be65fa38a21f085d6/ProtocolConformance.h.patch).
+
+The build succeeded, but running `Ninja-ReleaseAssert/swift-linux-armv7/bin/swiftc` results in:
+
+```
+<unknown>:0: error: unable to load standard library for target 'armv7l-unknown-linux-gnueabihf'
+```
+
 ## 2016/4/28: 2.2.1-RELEASE: FAILURE
 
 * **Status:** FAILURE ("Pointer is not sufficiently aligned")
@@ -141,14 +157,3 @@ ninja: build stopped: subcommand failed.
 /home/cell/swift_builds/10_2.2.1/swift_src/swift/utils/build-script: command terminated with a non-zero exit status
 1, aborting
 ```
-
-## 2016/4/29: 2.2.1-Release: SUCCESS
-
-This build added @hpux735's ProtocolConformance patch.
-
-The build succeeded, but running `Ninja-ReleaseAssert/swift-linux-armv7/bin/swiftc` results in:
-
-```
-<unknown>:0: error: unable to load standard library for target 'armv7l-unknown-linux-gnueabihf'
-```
-
