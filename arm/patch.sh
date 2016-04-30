@@ -12,6 +12,8 @@ source "${SHAS}"
 
 source "${SELF_DIR}/vars.bash"
 
+# thanks to http://unix.stackexchange.com/a/77737
+
 if [ -e "${SELF_DIR}/patches/swift-${SWIFT_SHA}" ]
 then
     if cat patches/swift-${SWIFT_SHA}/*.patch | patch -N --dry-run --silent -p1 -d "${SRC}/swift-${SWIFT_SHA}" 2>/dev/null
