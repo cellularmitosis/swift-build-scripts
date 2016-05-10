@@ -10,8 +10,26 @@ SELF_VERSION=$( echo "${SELF_NAME}" | sed 's/fetch\(.*\)\.sh/\1/' )
 SHAS="${SELF_DIR}/shas${SELF_VERSION}.bash"
 source "${SHAS}"
 
-source "${SELF_DIR}/vars.bash"
+# first, set the repos to default
+SWIFT_REPO="apple/swift"
+LLVM_REPO="apple/swift-llvm"
+CLANG_REPO="apple/swift-clang"
+LLDB_REPO="apple/swift-lldb"
+CMARK_REPO="apple/swift-cmark"
+TESTS_REPO="apple/swift-integration-tests"
+LLBUILD_REPO="apple/swift-llbuild"
+PM_REPO="apple/swift-package-manager"
+XCTEST_REPO="apple/swift-corelibs-xctest"
+FOUNDATION_REPO="apple/swift-corelibs-foundation"
 
+# then apply any repo overrides (if available)
+REPOS="${SELF_DIR}/repos${SELF_VERSION}.bash"
+if [ -e "${REPOS}" ]
+then
+    source "${REPOS}"
+fi
+
+source "${SELF_DIR}/vars.bash"
 
 ## dir structure
 
@@ -27,7 +45,7 @@ then
     if [ ! -e "${DOWNLOADS}/${SWIFT_SHA}.tar.gz" ]
     then
         cd "${DOWNLOADS}"
-        wget "https://github.com/apple/swift/archive/${SWIFT_SHA}.tar.gz"
+        wget "https://github.com/${SWIFT_REPO}/archive/${SWIFT_SHA}.tar.gz"
     fi
 
     cd "${SRC}"
@@ -43,7 +61,7 @@ then
     if [ ! -e "${DOWNLOADS}/${LLVM_SHA}.tar.gz" ]
     then
         cd "${DOWNLOADS}"
-        wget "https://github.com/apple/swift-llvm/archive/${LLVM_SHA}.tar.gz"
+        wget "https://github.com/${LLVM_REPO}/archive/${LLVM_SHA}.tar.gz"
     fi
 
     cd "${SRC}"
@@ -59,7 +77,7 @@ then
     if [ ! -e "${DOWNLOADS}/${CLANG_SHA}.tar.gz" ]
     then
         cd "${DOWNLOADS}"
-        wget "https://github.com/apple/swift-clang/archive/${CLANG_SHA}.tar.gz"
+        wget "https://github.com/${CLANG_REPO}/archive/${CLANG_SHA}.tar.gz"
     fi
 
     cd "${SRC}"
@@ -75,7 +93,7 @@ then
     if [ ! -e "${DOWNLOADS}/${LLDB_SHA}.tar.gz" ]
     then
         cd "${DOWNLOADS}"
-        wget "https://github.com/apple/swift-lldb/archive/${LLDB_SHA}.tar.gz"
+        wget "https://github.com/${LLDB_REPO}/archive/${LLDB_SHA}.tar.gz"
     fi
 
     cd "${SRC}"
@@ -91,7 +109,7 @@ then
     if [ ! -e "${DOWNLOADS}/${CMARK_SHA}.tar.gz" ]
     then
         cd "${DOWNLOADS}"
-        wget "https://github.com/apple/swift-cmark/archive/${CMARK_SHA}.tar.gz"
+        wget "https://github.com/${CMARK_REPO}/archive/${CMARK_SHA}.tar.gz"
     fi
 
     cd "${SRC}"
@@ -107,7 +125,7 @@ then
     if [ ! -e "${DOWNLOADS}/${TESTS_SHA}.tar.gz" ]
     then
         cd "${DOWNLOADS}"
-        wget "https://github.com/apple/swift-integration-tests/archive/${TESTS_SHA}.tar.gz"
+        wget "https://github.com/${TESTS_REPO}/archive/${TESTS_SHA}.tar.gz"
     fi
 
     cd "${SRC}"
@@ -123,7 +141,7 @@ then
     if [ ! -e "${DOWNLOADS}/${LLBUILD_SHA}.tar.gz" ]
     then
         cd "${DOWNLOADS}"
-        wget "https://github.com/apple/swift-llbuild/archive/${LLBUILD_SHA}.tar.gz"
+        wget "https://github.com/${LLBUILD_REPO}/archive/${LLBUILD_SHA}.tar.gz"
     fi
 
     cd "${SRC}"
@@ -139,7 +157,7 @@ then
     if [ ! -e "${DOWNLOADS}/${PM_SHA}.tar.gz" ]
     then
         cd "${DOWNLOADS}"
-        wget "https://github.com/apple/swift-package-manager/archive/${PM_SHA}.tar.gz"
+        wget "https://github.com/${PM_REPO}/archive/${PM_SHA}.tar.gz"
     fi
 
     cd "${SRC}"
@@ -155,7 +173,7 @@ then
     if [ ! -e "${DOWNLOADS}/${XCTEST_SHA}.tar.gz" ]
     then
         cd "${DOWNLOADS}"
-        wget "https://github.com/apple/swift-corelibs-xctest/archive/${XCTEST_SHA}.tar.gz"
+        wget "https://github.com/${XCTEST_REPO}/archive/${XCTEST_SHA}.tar.gz"
     fi
 
     cd "${SRC}"
@@ -171,7 +189,7 @@ then
     if [ ! -e "${DOWNLOADS}/${FOUNDATION_SHA}.tar.gz" ]
     then
         cd "${DOWNLOADS}"
-        wget "https://github.com/apple/swift-corelibs-foundation/archive/${FOUNDATION_SHA}.tar.gz"
+        wget "https://github.com/${FOUNDATION_REPO}/archive/${FOUNDATION_SHA}.tar.gz"
     fi
 
     cd "${SRC}"
