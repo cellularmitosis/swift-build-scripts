@@ -43,11 +43,10 @@ ln -s "${SRC}/swift-corelibs-foundation-${FOUNDATION_SHA}" swift-corelibs-founda
 
 cd "${SWIFT_BUILD_ROOT}"
 
-nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R -j 1 -- \
+nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R --lldb -j 1 -- \
 --install-swift \
---install-foundation \
---install-prefix=/usr \
---foundation \
+--install-lldb \
+--install-prefix=/ \
 --install-destdir="${INSTALL}" \
 '--swift-install-components=autolink-driver;compiler;clang-builtin-headers;stdlib;sdk-overlay;license' \
 --reconfigure
