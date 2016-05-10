@@ -43,7 +43,7 @@ ln -s "${SRC}/swift-corelibs-foundation-${FOUNDATION_SHA}" swift-corelibs-founda
 
 cd "${SWIFT_BUILD_ROOT}"
 
-nice swift/utils/build-script -R -j 1 -- \
+nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R -j 1 -- \
 --install-swift \
 --install-foundation \
 --install-prefix=/usr \
