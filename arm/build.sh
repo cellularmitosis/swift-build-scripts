@@ -43,17 +43,11 @@ ln -s "${SRC}/swift-corelibs-foundation-${FOUNDATION_SHA}" swift-corelibs-founda
 
 cd "${SWIFT_BUILD_ROOT}"
 
-# run once with all cores until we get killed via OOM during linking...
-#nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R || true
-
-# then run again with just 1 core to complete the linking.
-#nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R -j 1
-
-nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R --lldb -- \
+nice swift/utils/build-script -R -j 1 -- \
 --install-swift \
---install-lldb \
+--install-foundation \
 --install-prefix=/usr \
---install-destdir="/tmp/swift_install" \
+--foundation \
+--install-destdir="$( pwd )/swift_install" \
 '--swift-install-components=autolink-driver;compiler;clang-builtin-headers;stdlib;sdk-overlay;license' \
 --reconfigure
-
