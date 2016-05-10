@@ -14,6 +14,7 @@ source "${SELF_DIR}/vars.bash"
 
 export SWIFT_SOURCE_ROOT="$( pwd )/swift_src"
 export SWIFT_BUILD_ROOT="$( pwd )/swift_build"
+export INSTALL="$( pwd )/swift_install"
 
 mkdir -p "${SWIFT_SOURCE_ROOT}"
 mkdir -p "${SWIFT_BUILD_ROOT}"
@@ -23,7 +24,6 @@ function onexit
     echo ""
     echo "Results are in ${SWIFT_BUILD_ROOT}"
 }
-
 trap onexit EXIT
 
 cd "${SWIFT_SOURCE_ROOT}"
@@ -48,6 +48,6 @@ nice "${SWIFT_SOURCE_ROOT}"/swift/utils/build-script -R -j 1 -- \
 --install-foundation \
 --install-prefix=/usr \
 --foundation \
---install-destdir="$( pwd )/swift_install" \
+--install-destdir="${INSTALL}" \
 '--swift-install-components=autolink-driver;compiler;clang-builtin-headers;stdlib;sdk-overlay;license' \
 --reconfigure
